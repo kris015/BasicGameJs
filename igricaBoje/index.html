@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <title>Boje</title>
+    <style>
+        .okvir2{
+            display: flex;
+            width: 450px;
+           
+        }
+        .okvir{
+            width: 320px;
+            height: 320px;
+            padding:2px;
+            border: 2px solid black;
+            background-color: gray;
+            display: flex;
+            flex-wrap: wrap;
+            
+        }
+        .el{
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            margin:2px
+        }
+        .sa{
+            font-size: x-large;
+            background-color: lightgray;
+            margin:2px;
+            padding:2px;
+            width:100px
+        }
+
+        footer{
+            border: 1px solid black;
+            width: 400px;
+            margin-top: 40px;
+        }
+
+        .cont{
+            margin-left: 20px;
+        }    
+    </style>
+</head>
+<body> <div class="cont">
+    <h1>Igrica pogodi boju</h1>
+    <div class="okvir2">
+        <div class="okvir">
+            <div class="el" onclick="proveriBoju(this)" style="background-color: black"></div>
+            <div class="el" onclick="proveriBoju(this)" style="background-color:red"></div>
+            <div class="el" onclick="proveriBoju(this)" style="background-color: blue"></div>
+            <div class="el" onclick="proveriBoju(this)" style="background-color:yellow"></div>
+            <div class="el" onclick="proveriBoju(this)" style="background-color:green"></div>
+            <div class="el" onclick="proveriBoju(this)" style="background-color:purple"></div>
+            <div class="el" onclick="proveriBoju(this)" style="background-color:pink"></div>
+            <div class="el" onclick="proveriBoju(this)" style="background-color:orange"></div>
+            <div class="el" onclick="proveriBoju(this)" style="background-color:aqua"></div>
+        </div>
+        <div class="el" id="primer"></div>
+    </div>
+    <p>Preostalo vreme: </p>
+    <div class="sa" id="divVreme">Vreme</div>
+    <p>Osvojeni poeni: </p>
+    <div class="sa" id="divPoeni">Poeni</div><br>
+    <button onclick="start()" class="btn btn-primary">Pokreni igricu</button>
+    
+    <footer><i><b>Pravila igre:</b> Boju koja je prikazana u desnom posebnom kvadratu pronaci u tabeli boja i kliknuti na nju.<br>
+         Za svaku tacno odabranu boju dobicete 1 poen, a za gresku izgubicete 1 poen.<br>
+         Vremensko ogranicenje je 30 sekundi, a boja u desnom kvadratu se menja na svaku 1 sekundu.</i></footer>
+
+        </div>
+</body>
+</html>
+<script>
+    let klik=true;
+    let level="1000"; //Na 1s menja boju
+    let vreme="30";//Početno vreme
+    let poeni="0";//Početni poeni
+    let divVreme=document.querySelector("#divVreme");
+    let divPoeni=document.querySelector("#divPoeni");
+    let primer=document.querySelector("#primer");
+    divVreme.innerHTML=vreme;
+    divPoeni.innerHTML=poeni;
+    let boje=["black", "red","blue","yellow","green","purple","pink","orange","aqua"];
+    
+    let tmrVreme;//=setInterval(meriVreme, 1000);
+    let tmrBoja;//=setInterval(menjajBoju, level);
+    function menjajBoju(){
+        primer.style.backgroundColor=boje[Math.floor(Math.random() * 8)];
+        klik=true;
+    }
+
+    function meriVreme(){
+        starovreme=divVreme.innerHTML;
+        novovreme=starovreme-1;
+        divVreme.innerHTML=novovreme;
+        if(novovreme<1){
+            clearInterval(tmrBoja);
+            clearInterval(tmrVreme);
+            alert("Igra je zavrsena! Broj poena: "+divPoeni.innerHTML);
+            location.reload();
+        }
+        
+    }
+
+    function proveriBoju(obj){
+        if (klik==false)return false;
+        if(obj.style.backgroundColor==primer.style.backgroundColor){
+            divPoeni.innerHTML=parseInt(divPoeni.innerHTML)+1;
+        }else divPoeni.innerHTML=parseInt(divPoeni.innerHTML)-1;
+        klik=false;
+    }
+
+    function start(){
+        tmrVreme=setInterval(meriVreme, 1000);
+        tmrBoja=setInterval(menjajBoju, level);
+        menjajBoju();
+    }
+
+</script>
